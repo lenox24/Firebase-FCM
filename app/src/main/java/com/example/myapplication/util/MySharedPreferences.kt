@@ -10,7 +10,7 @@ class MySharedPreferences(context: Context) {
         get() = prefs.getString(PREFS_KEY, "").toString()
         set(value) = prefs.edit().putString(PREFS_KEY, value).apply()
 
-    var myAgree: String
-        get() = prefs.getString("agree", "").toString()
-        set(value) = prefs.edit().putString("agree", value).apply()
+    var myTopics: String
+        get() = prefs.getString("topic", "").toString()
+        set(value) = prefs.edit().putString("topic", value).apply()
 }

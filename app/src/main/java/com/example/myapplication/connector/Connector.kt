@@ -3,6 +3,7 @@ package com.example.myapplication.connector
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Connector {
@@ -20,6 +21,7 @@ object Connector {
         retrofit = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
+            //.addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
             .client(client)
             .build()
 
@@ -27,5 +29,6 @@ object Connector {
     }
 
     fun createApi(): API = retrofit.create(
-        API::class.java)
+        API::class.java
+    )
 }

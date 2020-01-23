@@ -35,38 +35,35 @@ class MyFIrebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: ${p0.data}")
         }
 
-        if (p0.notification != null) {
-            Log.d(TAG, "Message Notification TItle: ${p0.notification!!.title}")
-            Log.d(TAG, "Message Notification Body: ${p0.notification!!.body}")
+        val messageTitle = p0.data["title"].toString()
+        val messageBody = p0.data["body"].toString()
+        /*val messageTitle = p0.notification!!.title.toString()
+    val messageBody = p0.notification!!.body.toString()*/
 
-            val messageTitle = p0.notification!!.title.toString()
-            val messageBody = p0.notification!!.body.toString()
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-            val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-            val pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val notificationBuilder = NotificationCompat.Builder(this, "ddd")
+            .setSmallIcon(ic_launcher_foreground)
+            .setContentTitle(messageTitle)
+            .setContentText(messageBody)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
 
-            val notificationBuilder = NotificationCompat.Builder(this, "ddd")
-                .setSmallIcon(ic_launcher_foreground)
-                .setContentTitle(messageTitle)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channelName = "asdf"
-                val channel =
-                    NotificationChannel("ddd", channelName, NotificationManager.IMPORTANCE_HIGH)
-                notificationManager.createNotificationChannel(channel)
-            }
-
-            notificationManager.notify(0, notificationBuilder.build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelName = "asdf"
+            val channel =
+                NotificationChannel("ddd", channelName, NotificationManager.IMPORTANCE_HIGH)
+            notificationManager.createNotificationChannel(channel)
         }
+
+        notificationManager.notify(0, notificationBuilder.build())
     }
 
 
